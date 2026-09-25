@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ПLОМБИР: RED CARPET • 1 ГОД</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Библиотека для генерации QR-кодов на холсте -->
-    <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
     <style>
         :root {
             --bg-color: #09090b;
-            --glass-bg: rgba(18, 18, 21, 0.7);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-bg: rgba(18, 18, 21, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --gold: #fcd34d;
             --gold-dark: #d97706;
             --red: #ef4444;
@@ -36,7 +34,6 @@
             flex-direction: column;
         }
 
-        /* Анимация переливания золотого неона */
         @keyframes neonGlow {
             0% { box-shadow: 0 0 15px rgba(252, 211, 77, 0.2), inset 0 0 15px rgba(252, 211, 77, 0.1); }
             50% { box-shadow: 0 0 30px rgba(252, 211, 77, 0.45), inset 0 0 25px rgba(252, 211, 77, 0.2); }
@@ -63,9 +60,7 @@
             padding: 20px;
             text-align: center;
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+            top: 0; left: 0; width: 100%;
             background: var(--bg-color);
             z-index: 10;
             transition: opacity 0.4s ease;
@@ -84,7 +79,6 @@
             margin-bottom: 8px;
             text-transform: uppercase;
             text-shadow: 0 0 25px rgba(252, 211, 77, 0.4);
-            letter-spacing: 1px;
         }
 
         #screen-start p {
@@ -109,7 +103,6 @@
             width: 100%;
             max-width: 320px;
             margin-bottom: 12px;
-            transition: transform 0.1s ease;
         }
         .btn-gold:active { transform: scale(0.97); }
 
@@ -133,10 +126,7 @@
 
         .video-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             object-fit: cover;
             opacity: 0.5;
             z-index: 1;
@@ -149,8 +139,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            height: 100%;
-            width: 100%;
+            height: 100%; width: 100%;
             padding: 40px 20px;
         }
 
@@ -174,7 +163,6 @@
             animation: fadeIn 0.5s ease;
         }
 
-        /* Эффект жидкого стекла */
         .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(16px);
@@ -209,7 +197,6 @@
             font-size: 1.5rem;
             font-weight: 900;
             margin-bottom: 6px;
-            letter-spacing: 0.5px;
         }
 
         .header-card p {
@@ -242,7 +229,7 @@
             gap: 8px;
         }
 
-        /* Обложка стены папарацци со стильной анимацией стекла и сканером */
+        /* Стена Папарацци сверху */
         .paparazzi-cover {
             position: relative;
             background: linear-gradient(135deg, rgba(20, 20, 25, 0.85), rgba(10, 10, 12, 0.95));
@@ -329,31 +316,36 @@
             box-shadow: 0 0 10px rgba(252,211,77,0.3);
         }
 
-        .input-group {
-            margin-bottom: 14px;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-
-        .input-field, .select-field {
+        /* МИНИ-ИГРА АРКАНОИД */
+        .arcade-container {
+            position: relative;
             width: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
+            background: #000;
+            border: 2px solid var(--gold);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(252, 211, 77, 0.2);
+            margin-bottom: 10px;
         }
-        .input-field:focus, .select-field:focus { border-color: var(--gold); }
 
+        #gameCanvas {
+            display: block;
+            width: 100%;
+            height: 320px;
+            background: radial-gradient(circle at center, #18181b 0%, #000000 100%);
+            touch-action: none;
+        }
+
+        .arcade-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding: 0 4px;
+        }
+
+        /* Галерея */
         .gallery-container {
             display: flex;
             gap: 12px;
@@ -374,8 +366,7 @@
             flex-shrink: 0;
         }
         .gallery-item img {
-            width: 100%;
-            height: 100%;
+            width: 100%; height: 100%;
             object-fit: cover;
         }
 
@@ -427,7 +418,7 @@
         </video>
         <div class="preload-content">
             <div style="font-weight: 900; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px;">RED CARPET EXPERIENCE</div>
-            <div id="loadingStatus" class="loading-status">Подготовка билета через 14 сек...</div>
+            <div id="loadingStatus" class="loading-status">Загрузка тусовки через 14 сек...</div>
             <button class="btn-outline" style="background: rgba(0,0,0,0.5); border-color: var(--gold); color: var(--gold);" onclick="skipPreload()">ПРОПУСТИТЬ ЗАСТАВКУ ⏩</button>
         </div>
     </div>
@@ -443,7 +434,7 @@
             <div style="font-size: 0.85rem; color: var(--gold); font-weight: 700;">✨ Дресс-код: Hollywood Glam & Black Tie</div>
         </div>
 
-        <!-- 1. СТЕНА ПАПАРАЦЦИ (РАСПЛАГАЕТСЯ СВЕРХУ КАК ПРОСИЛИ) -->
+        <!-- 1. СТЕНА ПАПАРАЦЦИ СВЕРХУ -->
         <div class="section-title">💬 Стена Папарацци</div>
         <div class="paparazzi-cover">
             <div class="paparazzi-header">
@@ -459,27 +450,18 @@
             </div>
         </div>
 
-        <!-- 2. ГЕНЕРАТОР VIP-БИЛЕТА СО ВСТРОЕННЫМ QR-КОДОМ -->
-        <div class="section-title">🎫 Именной VIP-Билет гостя</div>
-        <div class="glass-card">
-            <div class="input-group">
-                <label>Ваше имя или никнейм:</label>
-                <input type="text" id="guestName" class="input-field" placeholder="Например: Павел" maxlength="18">
+        <!-- 2. МИНИ-ИГРА: РАЗБЕЙ СТЕНУ ПLОМБИРА -->
+        <div class="section-title">🕹️ Мини-игра: Разбей Стену Тусы</div>
+        <div class="glass-card" style="padding: 12px;">
+            <div class="arcade-info">
+                <span>Счет: <strong id="scoreVal" style="color:var(--gold);">0</strong></span>
+                <span id="gameStatusText" style="color:var(--gold);">Тапай / двигай платформу</span>
             </div>
-            <div class="input-group">
-                <label>Статус на дорожке:</label>
-                <select id="guestStatus" class="select-field">
-                    <option value="⭐️ ЗВЕЗДА ВЕЧЕРА">⭐️ Звезда вечера</option>
-                    <option value="📸 ПАПАРАЦЦИ">📸 Папарацци</option>
-                    <option value="🎬 ГЛАВНЫЙ ПРОДЮСЕР">🎬 Главный продюсер</option>
-                    <option value="🍾 ЛЕГЕНДА ТАНЦПОЛА">🍾 Легенда танцпола</option>
-                </select>
+            <div class="arcade-container">
+                <canvas id="gameCanvas"></canvas>
             </div>
-            <button class="btn-gold" style="width: 100%; max-width: none; margin-top: 4px; padding: 14px;" onclick="generateVIPCard()">СГЕНЕРИРОВАТЬ БИЛЕТ С QR 🎟️</button>
+            <button class="btn-gold" style="width: 100%; max-width: none; margin-top: 10px; padding: 12px;" onclick="restartGame()">ПЕРЕЗАПУСТИТЬ ИГРУ 🔄</button>
         </div>
-
-        <!-- Скрытый элемент для генерации QR-кода -->
-        <canvas id="hiddenQrCanvas" style="display:none;"></canvas>
 
         <!-- 3. АРХИВ ВОСПОМИНАНИЙ (GOOGLE ДИСК) -->
         <div class="section-title">📸 Архив воспоминаний</div>
@@ -513,13 +495,24 @@
                 }
             } catch(e) {
                 console.error("Ошибка синхронизации с бэкендом:", e);
+                renderFallbackGallery();
             }
+        }
+
+        function renderFallbackGallery() {
+            // Если с бэкенда не пришло, показываем заглушки или прямые ссылки из папок
+            const container = document.getElementById('googleDriveGallery');
+            container.innerHTML = `
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400" alt="ПLОМБИР"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400" alt="ПLОМБИР"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400" alt="ПLОМБИР"></div>
+            `;
         }
 
         function renderGallery() {
             const container = document.getElementById('googleDriveGallery');
             if (cloudPhotos.length === 0) {
-                container.innerHTML = '<div style="color:var(--text-muted);padding:20px;font-size:0.85rem;text-align:center;width:100%;">Фото из папок Google Диска скоро появятся здесь</div>';
+                renderFallbackGallery();
                 return;
             }
             container.innerHTML = cloudPhotos.map(url => `
@@ -564,97 +557,166 @@
             }
         }
 
-        function generateVIPCard() {
-            const nameInput = document.getElementById('guestName').value.trim() || "ГОСТЬ";
-            const statusInput = document.getElementById('guestStatus').value;
+        // ЛОГИКА МИНИ-ИГРЫ (АРКАНОИД)
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let score = 0;
+        let gameRunning = false;
+        let ball, paddle, bricks;
 
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 900;
-            canvas.height = 1200;
+        function initGameDimensions() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 300;
+        }
 
-            // Фон билета
-            ctx.fillStyle = "#09090b";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        function resetGameObjects() {
+            ball = {
+                x: canvas.width / 2,
+                y: canvas.height - 60,
+                radius: 8,
+                dx: 3,
+                dy: -3
+            };
 
-            // Золотая рамка
-            ctx.strokeStyle = "#fcd34d";
-            ctx.lineWidth = 12;
-            ctx.strokeRect(40, 40, canvas.width - 80, canvas.height - 80);
+            paddle = {
+                width: 90,
+                height: 14,
+                x: (canvas.width - 90) / 2,
+                y: canvas.height - 25
+            };
 
-            // Шапка билета
-            ctx.fillStyle = "#fcd34d";
-            ctx.font = "900 48px sans-serif";
-            ctx.textAlign = "center";
-            ctx.fillText("ПLОМБИР: RED CARPET", canvas.width / 2, 130);
+            bricks = [];
+            const rows = 4;
+            const cols = 6;
+            const padding = 6;
+            const width = (canvas.width - (padding * (cols + 1))) / cols;
+            const height = 20;
 
-            ctx.fillStyle = "#a1a1aa";
-            ctx.font = "bold 24px sans-serif";
-            ctx.fillText("1 ГОД • ЮБИЛЕЙНЫЙ ВЫПУСК", canvas.width / 2, 175);
+            for(let r=0; r<rows; r++) {
+                for(let c=0; c<cols; c++) {
+                    bricks.push({
+                        x: padding + c * (width + padding),
+                        y: 30 + r * (height + padding),
+                        w: width,
+                        h: height,
+                        status: 1
+                    });
+                }
+            }
+        }
 
-            // Внутренний блок карточки
-            ctx.fillStyle = "#18181b";
-            ctx.fillRect(100, 240, canvas.width - 200, 300);
-            ctx.strokeStyle = "#d97706";
-            ctx.lineWidth = 4;
-            ctx.strokeRect(100, 240, canvas.width - 200, 300);
+        function restartGame() {
+            initGameDimensions();
+            resetGameObjects();
+            score = 0;
+            document.getElementById('scoreVal').textContent = score;
+            document.getElementById('gameStatusText').textContent = "Лови шарик!";
+            gameRunning = true;
+        }
 
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 26px sans-serif";
-            ctx.fillText("ИМЕННОЙ VIP-БИЛЕТ", canvas.width / 2, 300);
+        // Управление пальцем / мышкой
+        canvas.addEventListener('touchmove', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let rootX = e.touches[0].clientX - rect.left;
+            paddle.x = rootX - paddle.width / 2;
+            if(paddle.x < 0) paddle.x = 0;
+            if(paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+            e.preventDefault();
+        }, {passive: false});
 
-            ctx.fillStyle = "#fcd34d";
-            ctx.font = "900 52px sans-serif";
-            ctx.fillText(nameInput.toUpperCase(), canvas.width / 2, 390);
+        canvas.addEventListener('mousemove', (e) => {
+            let rect = canvas.getBoundingClientRect();
+            let rootX = e.clientX - rect.left;
+            paddle.x = rootX - paddle.width / 2;
+            if(paddle.x < 0) paddle.x = 0;
+            if(paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
+        });
 
-            ctx.fillStyle = "#ef4444";
-            ctx.font = "900 30px sans-serif";
-            ctx.fillText(statusInput, canvas.width / 2, 470);
+        function updateGame() {
+            if (!gameRunning) return;
 
-            // Генерация QR-кода через библиотеку QRious в отдельный канвас
-            const qr = new QRious({
-                value: `PLMBR-VIP-${nameInput}-${statusInput}`,
-                size: 220
+            ball.x += ball.dx;
+            ball.y += ball.dy;
+
+            // Стенки
+            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
+                ball.dx = -ball.dx;
+            }
+            if (ball.y - ball.radius < 0) {
+                ball.dy = -ball.dy;
+            }
+
+            // Платформа
+            if (
+                ball.y + ball.radius >= paddle.y &&
+                ball.x >= paddle.x &&
+                ball.x <= paddle.x + paddle.width
+            ) {
+                ball.dy = -ball.dy;
+                // Угол отскока зависит от места удара
+                let hitPoint = ball.x - (paddle.x + paddle.width / 2);
+                ball.dx = hitPoint * 0.15;
+            }
+
+            // Проверка кирпичей
+            let activeBricks = 0;
+            bricks.forEach(b => {
+                if (b.status === 1) {
+                    activeBricks++;
+                    if (
+                        ball.x > b.x && ball.x < b.x + b.w &&
+                        ball.y > b.y && ball.y < b.y + b.h
+                    ) {
+                        ball.dy = -ball.dy;
+                        b.status = 0;
+                        score += 10;
+                        document.getElementById('scoreVal').textContent = score;
+                    }
+                }
             });
 
-            // Рисуем QR-код на холсте билета
-            let qrImg = new Image();
-            qrImg.onload = function() {
-                // Подложка под QR
-                ctx.fillStyle = "#ffffff";
-                ctx.fillRect(canvas.width / 2 - 120, 580, 240, 240);
-                ctx.drawImage(qrImg, canvas.width / 2 - 100, 600, 200, 200);
+            if (activeBricks === 0) {
+                document.getElementById('gameStatusText').textContent = "ПОБЕДА! СТЕНА РАЗБИТА 🔥";
+                gameRunning = false;
+            }
 
-                // Информация о месте и дате
-                ctx.fillStyle = "#ffffff";
-                ctx.font = "bold 24px sans-serif";
-                ctx.fillText("📅 12 ДЕКАБРЯ  •  📍 КЛУБ «БАЗА»", canvas.width / 2, 900);
-                ctx.fillStyle = "#a1a1aa";
-                ctx.font = "20px sans-serif";
-                ctx.fillText("Гродно, ул. Победы 35", canvas.width / 2, 940);
+            // Проигрыш
+            if (ball.y + ball.radius > canvas.height) {
+                document.getElementById('gameStatusText').textContent = "УПС! ШАРИК УПАЛ 🛑";
+                gameRunning = false;
+            }
+        }
 
-                // Брендовый хэштег внизу
-                ctx.fillStyle = "rgba(252, 211, 77, 0.2)";
-                ctx.font = "900 70px sans-serif";
-                ctx.fillText("#PLMBR", canvas.width / 2, 1100);
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-                // Сохранение или отправка билета
-                canvas.toBlob((blob) => {
-                    if (!blob) return;
-                    const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-                    const file = new File([blob], "plombir-red-carpet-vip.jpg", { type: "image/jpeg" });
+            // Кирпичи
+            bricks.forEach(b => {
+                if (b.status === 1) {
+                    ctx.fillStyle = "#fcd34d";
+                    ctx.fillRect(b.x, b.y, b.w, b.h);
+                    ctx.strokeStyle = "#d97706";
+                    ctx.strokeRect(b.x, b.y, b.w, b.h);
+                }
+            });
 
-                    if (isIOS && navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                        navigator.share({ title: 'Мой VIP-билет ПLОМБИР', text: 'Врываемся на голливудский юбилей! 🔥', files: [file] }).catch(() => {});
-                    } else {
-                        const link = document.createElement('a');
-                        link.download = 'plombir-red-carpet-vip.jpg';
-                        link.href = URL.createObjectURL(blob);
-                        link.click();
-                    }
-                }, 'image/jpeg', 0.95);
-            };
-            qrImg.src = qr.toDataURL();
+            // Платформа
+            ctx.fillStyle = "#ef4444";
+            ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+
+            // Шарик
+            ctx.beginPath();
+            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+            ctx.fillStyle = "#ffffff";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function gameLoop() {
+            updateGame();
+            drawGame();
+            requestAnimationFrame(gameLoop);
         }
 
         let preloadTimer = null;
@@ -676,14 +738,14 @@
 
             let timeLeft = 14;
             const statusEl = document.getElementById('loadingStatus');
-            statusEl.textContent = `Подготовка билета через ${timeLeft} сек...`;
+            statusEl.textContent = `Загрузка тусовки через ${timeLeft} сек...`;
 
             countdownInterval = setInterval(() => {
                 timeLeft--;
                 if (timeLeft > 0) {
-                    statusEl.textContent = `Подготовка билета через ${timeLeft} сек...`;
+                    statusEl.textContent = `Загрузка тусовки через ${timeLeft} сек...`;
                 } else {
-                    statusEl.textContent = "Врываемся на дорожку!";
+                    statusEl.textContent = "Врываемся!";
                 }
             }, 1000);
 
@@ -709,6 +771,11 @@
             fetchBackendData();
             updateTicker();
             setInterval(updateTicker, 3500);
+
+            // Запуск арканоида
+            initGameDimensions();
+            restartGame();
+            gameLoop();
         }
     </script>
 </body>
