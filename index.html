@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ПLОМБИР: RED CARPET</title>
+    <title>ПLОМБИР : Life</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
             --bg-color: #09090b;
-            --card-bg: rgba(24, 24, 27, 0.85);
+            --card-bg: rgba(24, 24, 27, 0.9);
             --border: rgba(255, 255, 255, 0.1);
             --gold: #fcd34d;
             --gold-dark: #d97706;
@@ -79,16 +79,10 @@
             display: none;
             flex: 1;
             padding: 16px;
-            animation: fadeIn 0.2s ease;
         }
 
         .app-screen.active {
             display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
@@ -107,7 +101,7 @@
             font-weight: 900;
             border: none;
             border-radius: 14px;
-            padding: 14px 20px;
+            padding: 12px 20px;
             font-size: 0.95rem;
             cursor: pointer;
             width: 100%;
@@ -116,20 +110,8 @@
             text-transform: uppercase;
         }
         .btn:active { transform: scale(0.97); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            box-shadow: none;
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-main);
-            border: 1px solid var(--border);
-            box-shadow: none;
-        }
+        .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); box-shadow: none; }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); box-shadow: none; }
 
         .profile-header {
             display: flex;
@@ -139,159 +121,54 @@
         }
 
         .avatar {
-            width: 65px;
-            height: 65px;
+            width: 65px; height: 65px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--gold), var(--red));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            font-weight: 900;
-            color: #000;
-            border: 2px solid var(--gold);
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; font-weight: 900; color: #000;
+            border: 2px solid var(--gold); flex-shrink: 0;
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            display: inline-block;
-            box-shadow: 0 0 8px var(--green);
+            width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; box-shadow: 0 0 8px var(--green);
         }
 
         .user-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);
         }
         .user-row:last-child { border-bottom: none; }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .user-info { display: flex; align-items: center; gap: 12px; }
         .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.08);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.95rem;
-            border: 1px solid var(--border);
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08);
+            display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border);
         }
 
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: calc(100vh - 190px);
-        }
-
+        .chat-container { display: flex; flex-direction: column; height: calc(100vh - 190px); }
         .messages-box {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            border: 1px solid var(--border);
-            margin-bottom: 12px;
+            flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px;
+            background: rgba(0,0,0,0.3); border-radius: 16px; border: 1px solid var(--border); margin-bottom: 12px;
         }
 
         .msg-bubble {
-            max-width: 80%;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 0.9rem;
-            line-height: 1.4;
-            word-break: break-word;
+            max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 0.9rem; line-height: 1.4; word-break: break-word;
         }
+        .msg-bubble.incoming { background: rgba(255,255,255,0.08); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .msg-bubble.outgoing { background: var(--gold); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 600; }
 
-        .msg-bubble.incoming {
-            background: rgba(255,255,255,0.08);
-            border: 1px solid var(--border);
-            align-self: flex-start;
-            border-bottom-left-radius: 4px;
-        }
-
-        .msg-bubble.outgoing {
-            background: var(--gold);
-            color: #000;
-            align-self: flex-end;
-            border-bottom-right-radius: 4px;
-            font-weight: 600;
-        }
-
-        .chat-input-row {
-            display: flex;
-            gap: 8px;
-        }
-
+        .chat-input-row { display: flex; gap: 8px; }
         .chat-input-row input {
-            flex: 1;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px;
-            color: #fff;
-            outline: none;
-            font-size: 0.95rem;
+            flex: 1; background: rgba(0,0,0,0.5); border: 1px solid var(--border); border-radius: 12px; padding: 12px; color: #fff; outline: none; font-size: 0.95rem;
         }
         .chat-input-row input:focus { border-color: var(--gold); }
 
         .canvas-wrap {
-            position: relative;
-            width: 100%;
-            height: 260px;
-            background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            border: 2px solid var(--gold);
-            margin-bottom: 12px;
+            position: relative; width: 100%; height: 240px; background: #ffffff; border-radius: 16px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 12px;
         }
-
-        #drawCanvas {
-            width: 100%;
-            height: 100%;
-            touch-action: none;
-            cursor: crosshair;
-        }
-
-        .tools-row {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 12px;
-            justify-content: center;
-        }
-
-        .color-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            cursor: pointer;
-        }
-
-        .badge-online {
-            font-size: 0.7rem;
-            color: var(--green);
-            background: rgba(34, 197, 94, 0.15);
-            padding: 3px 8px;
-            border-radius: 8px;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            font-weight: 700;
-        }
+        #drawCanvas { width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+        .tools-row { display: flex; gap: 10px; margin-bottom: 12px; justify-content: center; }
+        .color-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
+        .badge-online { font-size: 0.7rem; color: var(--green); background: rgba(34, 197, 94, 0.15); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.3); font-weight: 700; }
     </style>
 </head>
 <body>
@@ -302,7 +179,7 @@
             <div class="profile-header">
                 <div class="avatar" id="myAvatarLetter">П</div>
                 <div>
-                    <h2 id="myName" style="color: var(--gold); font-size: 1.2rem; margin-bottom: 4px;">Загрузка...</h2>
+                    <h2 id="myName" style="color: var(--gold); font-size: 1.2rem; margin-bottom: 4px;">Павел Цейко</h2>
                     <div style="display: flex; align-items: center; gap: 6px;">
                         <span class="status-dot"></span>
                         <span style="font-size: 0.8rem; color: var(--text-muted);">В сети • ID: <span id="myId">---</span></span>
@@ -310,7 +187,7 @@
                 </div>
             </div>
             <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
-                Статус: <strong style="color: #fff;" id="myBio">Врываюся на юбилей ПLОМБИР 🔥</strong>
+                Статус: <strong style="color: #fff;" id="myBio">ПLОМБИР: RED CARPET 🔥</strong>
             </div>
             <button class="btn btn-secondary" onclick="editBio()">Изменить статус ✍️</button>
         </div>
@@ -318,7 +195,16 @@
         <div class="card">
             <h3 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-main);">👥 Гости в клубе</h3>
             <div id="onlineUsersList">
-                <p style="color:var(--text-muted); font-size:0.85rem;">Загружаем список из GAS...</p>
+                <div class="user-row">
+                    <div class="user-info">
+                        <div class="user-avatar">А</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.9rem;">Александр</div>
+                            <div style="font-size: 0.7rem; color:var(--text-muted);">Диджей / Продюсер</div>
+                        </div>
+                    </div>
+                    <span class="badge-online">Online</span>
+                </div>
             </div>
         </div>
     </div>
@@ -328,24 +214,23 @@
         <div class="card">
             <h3 style="font-size: 1.1rem; color: var(--gold); margin-bottom: 12px;">🤝 Мои друзья</h3>
             <div id="friendsList" style="margin-bottom: 16px;">
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Список друзей пуст. Добавляй гостей из профиля!</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Здесь будут отображаться добавленные участники тусовки.</p>
             </div>
-            <button class="btn" onclick="switchTab('profile', document.querySelectorAll('.nav-item')[0])">Найти гостей 🔍</button>
         </div>
     </div>
 
-    <!-- ЭКРАН 3: ЧАТЫ -->
+    <!-- ЭКРАН 3: ЧАТЫ (Связан с GAS) -->
     <div id="screen-chats" class="app-screen">
-        <div class="card" style="margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; padding: 12px 16px;">
+        <div class="card" style="margin-bottom: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-size: 1rem; color: var(--gold);">💬 Общий чат #PLMBR</h3>
-            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 0.75rem;" onclick="createGroup()">+ Группа</button>
+            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 0.75rem;" onclick="fetchMessages()">🔄 Обновить</button>
         </div>
         <div class="chat-container">
             <div class="messages-box" id="globalChatBox">
-                <div class="msg-bubble incoming"><strong>ПLОМБИР Бот:</strong> Добро пожаловать в чат юбилея!</div>
+                <div class="msg-bubble incoming"><strong>Система:</strong> Подключение к базе данных...</div>
             </div>
             <div class="chat-input-row">
-                <input type="text" id="globalMsgInput" placeholder="Сообщение..." maxlength="200">
+                <input type="text" id="globalMsgInput" placeholder="Написать сообщение..." maxlength="200" onkeypress="if(event.key === 'Enter') sendGlobalMessage()">
                 <button class="btn" style="width: auto; padding: 0 16px;" onclick="sendGlobalMessage()">➤</button>
             </div>
         </div>
@@ -354,8 +239,8 @@
     <!-- ЭКРАН 4: КРОКОДИЛ -->
     <div id="screen-crocodile" class="app-screen">
         <div class="card" style="display:flex; flex-direction:column; align-items:center;">
-            <h3 style="color: var(--gold); margin-bottom: 4px; font-size: 1.1rem;">🐊 Крокодил Онлайн</h3>
-            <p id="gameRoleInfo" style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;">Угадай, что рисует художник!</p>
+            <h3 style="color: var(--gold); margin-bottom: 4px; font-size: 1.1rem;">🐊 Арт-Крокодил</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;">Рисуй и угадывай прямо в приложении!</p>
             
             <div class="canvas-wrap">
                 <canvas id="drawCanvas"></canvas>
@@ -371,7 +256,7 @@
 
             <div class="chat-input-row" style="width:100%;">
                 <input type="text" id="guessInput" placeholder="Вариант ответа..." maxlength="30">
-                <button class="btn" style="width: auto; padding: 0 14px;" onclick="submitGuess()">Угадать</button>
+                <button class="btn" style="width: auto; padding: 0 14px;" onclick="submitGuess()">Отправить</button>
             </div>
         </div>
     </div>
@@ -392,101 +277,40 @@
         </button>
         <button class="nav-item" onclick="switchTab('crocodile', this)">
             <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            Крокодил
+            Игра
         </button>
     </nav>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjfWGsUzExw1RlJtHgDypL3Se7w-lORUBXu82NPQxXkvsnnZB7WcGQQ0oOyXHWcqHopQ/exec";
+        // Интегрированный URL твоего GAS Веб-приложения
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww3qW0u86gmBc0grmY_LlvU-mhXCHpImdSPFRBhO8DvBB-bBV9-U03b51OY-osPb0E/exec";
 
         let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
         if (tg) tg.expand();
 
         let currentUser = {
-            id: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : Math.floor(100000 + Math.random() * 900000),
+            id: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "999999",
             first_name: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "Павел",
-            bio: "Врываюся на юбилей ПLОМБИР 🔥"
+            bio: "ПLОМБИР: RED CARPET 🔥"
         };
-
-        let myFriends = [];
-        let allUsers = [
-            { id: 101, name: "Алексей", bio: "Главный по вайбу", online: true },
-            { id: 102, name: "Карина", bio: "Hollywood Glam ✨", online: true }
-        ];
 
         function initApp() {
             document.getElementById('myName').textContent = currentUser.first_name;
             document.getElementById('myId').textContent = currentUser.id;
             document.getElementById('myAvatarLetter').textContent = currentUser.first_name.charAt(0).toUpperCase();
             document.getElementById('myBio').textContent = currentUser.bio;
-            renderUsers();
-            fetchDataFromGAS();
+            
             initCrocodile();
+            fetchMessages();
+            // Авто-опрос чата каждые 5 секунд для синхронизации
+            setInterval(fetchMessages, 5000);
         }
 
-        async function fetchDataFromGAS() {
-            if (!SCRIPT_URL.includes("http")) return;
-            try {
-                let res = await fetch(SCRIPT_URL);
-                let data = await res.json();
-                if (data.messages) renderMessages(data.messages);
-            } catch(e) {
-                console.error("Ошибка загрузки данных с GAS:", e);
-            }
-        }
-
-        function renderUsers() {
-            const container = document.getElementById('onlineUsersList');
-            container.innerHTML = allUsers.map(u => `
-                <div class="user-row">
-                    <div class="user-info">
-                        <div class="user-avatar">${u.name.charAt(0)}</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.9rem;">${u.name}</div>
-                            <div style="font-size: 0.7rem; color:var(--text-muted);">${u.bio}</div>
-                        </div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:6px;">
-                        <span class="badge-online">Online</span>
-                        <button class="btn btn-outline" style="width:auto; padding:4px 8px; font-size:0.7rem;" onclick="toggleFriend(${u.id})">
-                            ${myFriends.includes(u.id) ? '✓ Друг' : '+ Друг'}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-            renderFriends();
-        }
-
-        function toggleFriend(id) {
-            if (myFriends.includes(id)) {
-                myFriends = myFriends.filter(f => f !== id);
-            } else {
-                myFriends.push(id);
-            }
-            renderUsers();
-        }
-
-        function renderFriends() {
-            const container = document.getElementById('friendsList');
-            if (myFriends.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">Список друзей пуст.</p>';
-                return;
-            }
-            container.innerHTML = myFriends.map(fId => {
-                let user = allUsers.find(u => u.id === fId);
-                return `
-                    <div class="user-row">
-                        <div class="user-info">
-                            <div class="user-avatar">${user.name.charAt(0)}</div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 0.9rem;">${user.name}</div>
-                                <div style="font-size: 0.7rem; color:var(--green);">В сети</div>
-                            </div>
-                        </div>
-                        <button class="btn" style="width:auto; padding:4px 10px; font-size:0.75rem;" onclick="switchTab('chats', document.querySelectorAll('.nav-item')[2])">Написать</button>
-                    </div>
-                `;
-            }).join('');
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.navbar button').forEach(b => b.classList.remove('active'));
+            document.getElementById('screen-' + tabId).classList.add('active');
+            btn.classList.add('active');
         }
 
         function editBio() {
@@ -497,11 +321,18 @@
             }
         }
 
-        function switchTab(tabId, btn) {
-            document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.navbar button').forEach(b => b.classList.remove('active'));
-            document.getElementById('screen-' + tabId).classList.add('active');
-            btn.classList.add('active');
+        // РАБОТА С GOOGLE SHEETS ЧЕРЕЗ GAS
+        async function fetchMessages() {
+            if (!SCRIPT_URL.startsWith("http")) return;
+            try {
+                let res = await fetch(SCRIPT_URL);
+                let data = await res.json();
+                if (data.status === "ok" && data.messages) {
+                    renderMessages(data.messages);
+                }
+            } catch(e) {
+                console.error("Ошибка загрузки сообщений:", e);
+            }
         }
 
         async function sendGlobalMessage() {
@@ -509,39 +340,42 @@
             const text = input.value.trim();
             if (!text) return;
 
+            input.value = "";
+            
+            // Оптимистичное добавление в интерфейс
             const box = document.getElementById('globalChatBox');
             box.innerHTML += `<div class="msg-bubble outgoing"><strong>${currentUser.first_name}:</strong> ${text}</div>`;
-            input.value = "";
             box.scrollTop = box.scrollHeight;
 
-            if (SCRIPT_URL.includes("http")) {
+            if (SCRIPT_URL.startsWith("http")) {
                 try {
                     await fetch(SCRIPT_URL, {
                         method: "POST",
                         mode: "no-cors",
-                        headers: { "Content-Type": "application/json" },
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({ author: currentUser.first_name, text: text })
                     });
+                    setTimeout(fetchMessages, 1000);
                 } catch(e) {
-                    console.error("Не удалось отправить на GAS", e);
+                    console.error("Ошибка отправки:", e);
                 }
             }
         }
 
         function renderMessages(msgs) {
             const box = document.getElementById('globalChatBox');
-            box.innerHTML = msgs.map(m => `
-                <div class="msg-bubble incoming"><strong>${m.author}:</strong> ${m.text}</div>
-            `).join('');
+            if (msgs.length === 0) {
+                box.innerHTML = `<div class="msg-bubble incoming"><strong>Система:</strong> Чат пока пуст. Напиши первое сообщение!</div>`;
+                return;
+            }
+            box.innerHTML = msgs.map(m => {
+                let isMine = m.author === currentUser.first_name;
+                return `<div class="msg-bubble ${isMine ? 'outgoing' : 'incoming'}"><strong>${m.author}:</strong> ${m.text}</div>`;
+            }).join('');
             box.scrollTop = box.scrollHeight;
         }
 
-        function createGroup() {
-            let name = prompt("Название группы:");
-            if (name) alert(`Группа "${name}" создана!`);
-        }
-
-        // КРОКОДИЛ
+        // ИГРА КРОКОДИЛ
         const canvas = document.getElementById('drawCanvas');
         const ctx = canvas.getContext('2d');
         let painting = false;
@@ -587,7 +421,7 @@
         function submitGuess() {
             const input = document.getElementById('guessInput');
             if (input.value.trim()) {
-                alert(`Ваш ответ "${input.value}" отправлен в игру!`);
+                alert(`Ваш вариант "${input.value}" отправлен!`);
                 input.value = "";
             }
         }
