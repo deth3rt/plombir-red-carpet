@@ -64,26 +64,11 @@
             transition: color 0.2s;
         }
 
-        .nav-item.active {
-            color: var(--gold);
-        }
+        .nav-item.active { color: var(--gold); }
+        .nav-item svg { width: 22px; height: 22px; margin-bottom: 4px; fill: currentColor; }
 
-        .nav-item svg {
-            width: 22px;
-            height: 22px;
-            margin-bottom: 4px;
-            fill: currentColor;
-        }
-
-        .app-screen {
-            display: none;
-            flex: 1;
-            padding: 16px;
-        }
-
-        .app-screen.active {
-            display: block;
-        }
+        .app-screen { display: none; flex: 1; padding: 16px; }
+        .app-screen.active { display: block; }
 
         .card {
             background: var(--card-bg);
@@ -110,34 +95,19 @@
             text-transform: uppercase;
         }
         .btn:active { transform: scale(0.97); }
-        .btn-outline { background: transparent; color: var(--gold); border: 1px solid var(--gold); box-shadow: none; }
         .btn-secondary { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid var(--border); box-shadow: none; }
 
-        .profile-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 16px;
-        }
-
+        .profile-header { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
         .avatar {
-            width: 65px; height: 65px;
-            border-radius: 50%;
+            width: 65px; height: 65px; border-radius: 50%;
             background: linear-gradient(135deg, var(--gold), var(--red));
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem; font-weight: 900; color: #000;
-            border: 2px solid var(--gold); flex-shrink: 0;
+            font-size: 1.6rem; font-weight: 900; color: #000; border: 2px solid var(--gold); flex-shrink: 0;
         }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; box-shadow: 0 0 8px var(--green); }
 
-        .status-dot {
-            width: 8px; height: 8px; border-radius: 50%; background: var(--green); display: inline-block; box-shadow: 0 0 8px var(--green);
-        }
-
-        .user-row {
-            display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border);
-        }
+        .user-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); }
         .user-row:last-child { border-bottom: none; }
-
         .user-info { display: flex; align-items: center; gap: 12px; }
         .user-avatar {
             width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.08);
@@ -149,10 +119,7 @@
             flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px;
             background: rgba(0,0,0,0.3); border-radius: 16px; border: 1px solid var(--border); margin-bottom: 12px;
         }
-
-        .msg-bubble {
-            max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 0.9rem; line-height: 1.4; word-break: break-word;
-        }
+        .msg-bubble { max-width: 80%; padding: 10px 14px; border-radius: 14px; font-size: 0.9rem; line-height: 1.4; word-break: break-word; }
         .msg-bubble.incoming { background: rgba(255,255,255,0.08); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 4px; }
         .msg-bubble.outgoing { background: var(--gold); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 600; }
 
@@ -165,8 +132,8 @@
         .canvas-wrap {
             position: relative; width: 100%; height: 240px; background: #ffffff; border-radius: 16px; overflow: hidden; border: 2px solid var(--gold); margin-bottom: 12px;
         }
-        #drawCanvas { width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
-        .tools-row { display: flex; gap: 10px; margin-bottom: 12px; justify-content: center; }
+        #drawCanvas { width: 100%; height: 100%; touch-action: none; display: block; cursor: crosshair; }
+        .tools-row { display: flex; gap: 10px; margin-bottom: 12px; justify-content: center; align-items: center; }
         .color-btn { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; }
         .badge-online { font-size: 0.7rem; color: var(--green); background: rgba(34, 197, 94, 0.15); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(34, 197, 94, 0.3); font-weight: 700; }
     </style>
@@ -191,43 +158,27 @@
             </div>
             <button class="btn btn-secondary" onclick="editBio()">Изменить статус ✍️</button>
         </div>
-
-        <div class="card">
-            <h3 style="font-size: 1rem; margin-bottom: 10px; color: var(--text-main);">👥 Гости в клубе</h3>
-            <div id="onlineUsersList">
-                <div class="user-row">
-                    <div class="user-info">
-                        <div class="user-avatar">А</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.9rem;">Александр</div>
-                            <div style="font-size: 0.7rem; color:var(--text-muted);">Диджей / Продюсер</div>
-                        </div>
-                    </div>
-                    <span class="badge-online">Online</span>
-                </div>
-            </div>
-        </div>
     </div>
 
-    <!-- ЭКРАН 2: ДРУЗЬЯ -->
+    <!-- ЭКРАН 2: ДРУЗЬЯ (Динамический список из БД) -->
     <div id="screen-friends" class="app-screen">
         <div class="card">
-            <h3 style="font-size: 1.1rem; color: var(--gold); margin-bottom: 12px;">🤝 Мои друзья</h3>
-            <div id="friendsList" style="margin-bottom: 16px;">
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Здесь будут отображаться добавленные участники тусовки.</p>
+            <h3 style="font-size: 1.1rem; color: var(--gold); margin-bottom: 12px;">🤝 Участники тусовки</h3>
+            <div id="friendsList">
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Загрузка участников из базы...</p>
             </div>
         </div>
     </div>
 
-    <!-- ЭКРАН 3: ЧАТЫ (Связан с GAS) -->
+    <!-- ЭКРАН 3: ЧАТЫ -->
     <div id="screen-chats" class="app-screen">
         <div class="card" style="margin-bottom: 10px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
             <h3 style="font-size: 1rem; color: var(--gold);">💬 Общий чат #PLMBR</h3>
-            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 0.75rem;" onclick="fetchMessages()">🔄 Обновить</button>
+            <button class="btn" style="width: auto; padding: 6px 12px; font-size: 0.75rem;" onclick="fetchData()">🔄 Обновить</button>
         </div>
         <div class="chat-container">
             <div class="messages-box" id="globalChatBox">
-                <div class="msg-bubble incoming"><strong>Система:</strong> Подключение к базе данных...</div>
+                <div class="msg-bubble incoming"><strong>Система:</strong> Синхронизация с таблицей...</div>
             </div>
             <div class="chat-input-row">
                 <input type="text" id="globalMsgInput" placeholder="Написать сообщение..." maxlength="200" onkeypress="if(event.key === 'Enter') sendGlobalMessage()">
@@ -236,11 +187,11 @@
         </div>
     </div>
 
-    <!-- ЭКРАН 4: КРОКОДИЛ -->
+    <!-- ЭКРАН 4: КРОКОДИЛ (Рабочий холст) -->
     <div id="screen-crocodile" class="app-screen">
         <div class="card" style="display:flex; flex-direction:column; align-items:center;">
             <h3 style="color: var(--gold); margin-bottom: 4px; font-size: 1.1rem;">🐊 Арт-Крокодил</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;">Рисуй и угадывай прямо в приложении!</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; text-align: center;">Рисуй пальцем или мышкой прямо на холсте!</p>
             
             <div class="canvas-wrap">
                 <canvas id="drawCanvas"></canvas>
@@ -251,7 +202,7 @@
                 <div class="color-btn" style="background:#ef4444;" onclick="setDrawColor('#ef4444')"></div>
                 <div class="color-btn" style="background:#22c55e;" onclick="setDrawColor('#22c55e')"></div>
                 <div class="color-btn" style="background:#3b82f6;" onclick="setDrawColor('#3b82f6')"></div>
-                <button class="btn btn-secondary" style="width:auto; padding:6px 12px; font-size:0.75rem;" onclick="clearCanvas()">Очистить</button>
+                <button class="btn btn-secondary" style="width:auto; padding:8px 14px; font-size:0.75rem;" onclick="clearCanvas()">Очистить</button>
             </div>
 
             <div class="chat-input-row" style="width:100%;">
@@ -261,7 +212,7 @@
         </div>
     </div>
 
-    <!-- НИЖНЯЯ НАВИГАЦИЯ -->
+    <!-- НАВИГАЦИЯ -->
     <nav class="navbar">
         <button class="nav-item active" onclick="switchTab('profile', this)">
             <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -282,14 +233,13 @@
     </nav>
 
     <script>
-        // Интегрированный URL твоего GAS Веб-приложения
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbww3qW0u86gmBc0grmY_LlvU-mhXCHpImdSPFRBhO8DvBB-bBV9-U03b51OY-osPb0E/exec";
 
         let tg = window.Telegram && window.Telegram.WebApp ? window.Telegram.WebApp : null;
         if (tg) tg.expand();
 
         let currentUser = {
-            id: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "999999",
+            id: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.id : "777777",
             first_name: tg && tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user.first_name : "Павел",
             bio: "ПLОМБИР: RED CARPET 🔥"
         };
@@ -301,9 +251,8 @@
             document.getElementById('myBio').textContent = currentUser.bio;
             
             initCrocodile();
-            fetchMessages();
-            // Авто-опрос чата каждые 5 секунд для синхронизации
-            setInterval(fetchMessages, 5000);
+            fetchData();
+            setInterval(fetchData, 5000);
         }
 
         function switchTab(tabId, btn) {
@@ -321,17 +270,18 @@
             }
         }
 
-        // РАБОТА С GOOGLE SHEETS ЧЕРЕЗ GAS
-        async function fetchMessages() {
+        // Синхронизация с Google Таблицей (Сообщения + Пользователи)
+        async function fetchData() {
             if (!SCRIPT_URL.startsWith("http")) return;
             try {
                 let res = await fetch(SCRIPT_URL);
                 let data = await res.json();
-                if (data.status === "ok" && data.messages) {
-                    renderMessages(data.messages);
+                if (data.status === "ok") {
+                    renderMessages(data.messages || []);
+                    renderUsers(data.users || []);
                 }
             } catch(e) {
-                console.error("Ошибка загрузки сообщений:", e);
+                console.error("Ошибка синхронизации:", e);
             }
         }
 
@@ -342,30 +292,28 @@
 
             input.value = "";
             
-            // Оптимистичное добавление в интерфейс
+            // Локальный предпросмотр сообщения
             const box = document.getElementById('globalChatBox');
             box.innerHTML += `<div class="msg-bubble outgoing"><strong>${currentUser.first_name}:</strong> ${text}</div>`;
             box.scrollTop = box.scrollHeight;
 
-            if (SCRIPT_URL.startsWith("http")) {
-                try {
-                    await fetch(SCRIPT_URL, {
-                        method: "POST",
-                        mode: "no-cors",
-                        headers: { "Content-Type": "text/plain;charset=utf-8" },
-                        body: JSON.stringify({ author: currentUser.first_name, text: text })
-                    });
-                    setTimeout(fetchMessages, 1000);
-                } catch(e) {
-                    console.error("Ошибка отправки:", e);
-                }
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ author: currentUser.first_name, text: text })
+                });
+                setTimeout(fetchData, 1000);
+            } catch(e) {
+                console.error("Ошибка отправки:", e);
             }
         }
 
         function renderMessages(msgs) {
             const box = document.getElementById('globalChatBox');
             if (msgs.length === 0) {
-                box.innerHTML = `<div class="msg-bubble incoming"><strong>Система:</strong> Чат пока пуст. Напиши первое сообщение!</div>`;
+                box.innerHTML = `<div class="msg-bubble incoming"><strong>Система:</strong> Чат пуст. Напиши первое сообщение!</div>`;
                 return;
             }
             box.innerHTML = msgs.map(m => {
@@ -375,7 +323,27 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        // ИГРА КРОКОДИЛ
+        function renderUsers(users) {
+            const list = document.getElementById('friendsList');
+            if (users.length === 0) {
+                list.innerHTML = `<p style="color: var(--text-muted); font-size: 0.85rem;">Пока нет активных участников в базе.</p>`;
+                return;
+            }
+            list.innerHTML = users.map(u => `
+                <div class="user-row">
+                    <div class="user-info">
+                        <div class="user-avatar">${u.name.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.9rem;">${u.name}</div>
+                            <div style="font-size: 0.7rem; color:var(--text-muted);">Активен: ${u.lastSeen}</div>
+                        </div>
+                    </div>
+                    <span class="badge-online">В сети</span>
+                </div>
+            `).join('');
+        }
+
+        // РАБОЧИЙ ХОЛСТ (КРОКОДИЛ)
         const canvas = document.getElementById('drawCanvas');
         const ctx = canvas.getContext('2d');
         let painting = false;
@@ -389,39 +357,55 @@
         }
 
         function setDrawColor(col) { currentColor = col; }
+        
         function clearCanvas() {
             ctx.fillStyle = "#ffffff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
         }
 
-        canvas.addEventListener('mousedown', (e) => { painting = true; draw(e); });
-        canvas.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
-        canvas.addEventListener('mousemove', draw);
+        function startPos(e) {
+            painting = true;
+            draw(e);
+        }
 
-        canvas.addEventListener('touchstart', (e) => { painting = true; draw(e); e.preventDefault(); });
-        canvas.addEventListener('touchend', () => { painting = false; ctx.beginPath(); });
-        canvas.addEventListener('touchmove', (e) => { draw(e); e.preventDefault(); });
+        function stopPos() {
+            painting = false;
+            ctx.beginPath();
+        }
 
         function draw(e) {
             if (!painting) return;
+            e.preventDefault();
+
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.strokeStyle = currentColor;
 
             let rect = canvas.getBoundingClientRect();
-            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
-            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            let clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+            let clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
 
-            ctx.lineTo(clientX - rect.left, clientY - rect.top);
+            let x = clientX - rect.left;
+            let y = clientY - rect.top;
+
+            ctx.lineTo(x, y);
             ctx.stroke();
             ctx.beginPath();
-            ctx.moveTo(clientX - rect.left, clientY - rect.top);
+            ctx.moveTo(x, y);
         }
+
+        canvas.addEventListener('mousedown', startPos);
+        canvas.addEventListener('mouseup', stopPos);
+        canvas.addEventListener('mousemove', draw);
+
+        canvas.addEventListener('touchstart', startPos, { passive: false });
+        canvas.addEventListener('touchend', stopPos);
+        canvas.addEventListener('touchmove', draw, { passive: false });
 
         function submitGuess() {
             const input = document.getElementById('guessInput');
             if (input.value.trim()) {
-                alert(`Ваш вариант "${input.value}" отправлен!`);
+                alert(`Ответ "${input.value}" принят!`);
                 input.value = "";
             }
         }
