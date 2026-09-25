@@ -3,18 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ПLОМБИР: RED CARPET • 1 ГОД</title>
+    <title>ПLОМБИР : Life</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --bg-color: #09090b;
-            --glass-bg: rgba(18, 18, 21, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --gold: #fcd34d;
-            --gold-dark: #d97706;
-            --red: #ef4444;
-            --text-main: #f4f4f5;
-            --text-muted: #a1a1aa;
+            --bg-color: #0f1015;
+            --card-bg: #1a1c24;
+            --accent: #00ffcc;
+            --accent-glow: rgba(0, 255, 204, 0.3);
+            --text-main: #ffffff;
+            --text-secondary: #8b90a0;
+            --danger: #ff3366;
         }
 
         * {
@@ -28,754 +27,398 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
             display: flex;
             flex-direction: column;
-        }
-
-        @keyframes neonGlow {
-            0% { box-shadow: 0 0 15px rgba(252, 211, 77, 0.2), inset 0 0 15px rgba(252, 211, 77, 0.1); }
-            50% { box-shadow: 0 0 30px rgba(252, 211, 77, 0.45), inset 0 0 25px rgba(252, 211, 77, 0.2); }
-            100% { box-shadow: 0 0 15px rgba(252, 211, 77, 0.2), inset 0 0 15px rgba(252, 211, 77, 0.1); }
-        }
-
-        @keyframes scanline {
-            0% { top: 0%; opacity: 0.8; }
-            50% { opacity: 0.3; }
-            100% { top: 100%; opacity: 0.8; }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .screen {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            background: var(--bg-color);
-            z-index: 10;
-            transition: opacity 0.4s ease;
-        }
-
-        .hidden-screen {
-            opacity: 0;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        #screen-start h1 {
-            font-size: 2.5rem;
-            color: var(--gold);
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 0 25px rgba(252, 211, 77, 0.4);
-        }
-
-        #screen-start p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 35px;
-            line-height: 1.4;
-            max-width: 300px;
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #fcd34d 0%, #d97706 100%);
-            color: #000;
-            border: none;
-            border-radius: 14px;
-            padding: 16px 32px;
-            font-size: 1.05rem;
-            font-weight: 900;
-            cursor: pointer;
-            text-transform: uppercase;
-            box-shadow: 0 4px 20px rgba(252, 211, 77, 0.4);
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 12px;
-        }
-        .btn-gold:active { transform: scale(0.97); }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--text-muted);
-            border: 2px solid var(--glass-border);
-            border-radius: 14px;
-            padding: 12px 24px;
-            font-size: 0.95rem;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            max-width: 320px;
-        }
-
-        #screen-preload {
-            background: #000;
-            z-index: 20;
-        }
-
-        .video-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover;
-            opacity: 0.5;
-            z-index: 1;
-        }
-
-        .preload-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%; width: 100%;
-            padding: 40px 20px;
-        }
-
-        .loading-status {
-            font-size: 1.05rem;
-            color: var(--gold);
-            font-weight: 800;
-            background: rgba(0, 0, 0, 0.75);
-            padding: 12px 24px;
-            border-radius: 20px;
-            border: 1px solid var(--gold);
-            box-shadow: 0 0 15px rgba(252,211,77,0.2);
-        }
-
-        #screen-main {
-            position: relative;
-            z-index: 5;
-            display: block;
-            padding: 20px 16px 80px 16px;
-            min-height: 100vh;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .glass-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .header-card {
-            background: linear-gradient(145deg, rgba(24, 24, 27, 0.8), rgba(9, 9, 11, 0.9));
-            border: 2px solid rgba(252, 211, 77, 0.4);
-            border-radius: 24px;
-            padding: 22px;
-            margin-bottom: 20px;
-            position: relative;
+            height: 100vh;
+            height: 100dvh;
             overflow: hidden;
-            animation: neonGlow 4s infinite ease-in-out;
         }
 
-        .header-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
-        }
-
-        .header-card h2 {
-            color: var(--gold);
-            font-size: 1.5rem;
-            font-weight: 900;
-            margin-bottom: 6px;
-        }
-
-        .header-card p {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-        }
-
-        .badge-pill {
-            display: inline-block;
-            background: rgba(239, 68, 68, 0.15);
-            color: var(--red);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-            padding: 5px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            color: var(--text-main);
-            font-size: 1.1rem;
-            font-weight: 800;
-            margin: 20px 0 10px 4px;
-            text-align: left;
+        .app-container {
             display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* Стена Папарацци сверху */
-        .paparazzi-cover {
-            position: relative;
-            background: linear-gradient(135deg, rgba(20, 20, 25, 0.85), rgba(10, 10, 12, 0.95));
-            border: 1px solid rgba(252, 211, 77, 0.3);
-            border-radius: 20px;
-            padding: 20px;
-            overflow: hidden;
-            margin-bottom: 16px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-        }
-
-        .paparazzi-cover::after {
-            content: '';
-            position: absolute;
-            left: 0; right: 0; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            animation: scanline 3s infinite linear;
-        }
-
-        .paparazzi-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .paparazzi-badge {
-            background: rgba(252, 211, 77, 0.15);
-            color: var(--gold);
-            border: 1px solid rgba(252, 211, 77, 0.4);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .ticker-wrap {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 12px;
-            padding: 14px;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--glass-border);
-            margin-bottom: 14px;
-        }
-
-        .ticker-text {
-            color: var(--gold);
-            font-size: 0.9rem;
-            font-weight: 700;
-            text-align: center;
-            word-break: break-word;
-        }
-
-        .wall-input-row {
-            display: flex;
-            gap: 8px;
-        }
-
-        .wall-input-row input {
+            flex-direction: column;
             flex: 1;
-            background: rgba(0,0,0,0.6);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px 14px;
-            color: #fff;
-            font-size: 0.9rem;
-            outline: none;
+            overflow: hidden;
+            position: relative;
         }
-        .wall-input-row input:focus { border-color: var(--gold); }
 
-        .wall-input-row button {
-            background: var(--gold);
+        /* Экраны */
+        .screen {
+            display: none;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            padding-bottom: 80px; /* Место под навбар */
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Навигация */
+        .navbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 65px;
+            background: rgba(26, 28, 36, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: 0.2s;
+            flex: 1;
+            height: 100%;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 4px;
+            fill: currentColor;
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        /* Общие компоненты */
+        h1, h2 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            font-weight: 700;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            background: var(--accent);
             color: #000;
             border: none;
             border-radius: 12px;
-            padding: 0 18px;
-            font-weight: 900;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 14px;
             cursor: pointer;
-            box-shadow: 0 0 10px rgba(252,211,77,0.3);
+            width: 100%;
+            text-align: center;
+            transition: 0.2s;
         }
 
-        /* МИНИ-ИГРА АРКАНОИД */
-        .arcade-container {
+        .btn:active {
+            transform: scale(0.98);
+            opacity: 0.9;
+        }
+
+        /* Профиль */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #0066ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .profile-info h3 {
+            font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .profile-info p {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        /* Друзья и онлайн */
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .user-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+        }
+
+        .user-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mini-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #2a2d39;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        /* Игра Крокодил */
+        .canvas-container {
             position: relative;
             width: 100%;
-            background: #000;
-            border: 2px solid var(--gold);
-            border-radius: 20px;
+            aspect-ratio: 1;
+            background: #fff;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(252, 211, 77, 0.2);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
-        #gameCanvas {
-            display: block;
+        canvas {
             width: 100%;
-            height: 320px;
-            background: radial-gradient(circle at center, #18181b 0%, #000000 100%);
+            height: 100%;
             touch-action: none;
         }
 
-        .arcade-info {
+        .game-controls {
             display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: var(--text-muted);
+            gap: 8px;
             margin-bottom: 12px;
-            padding: 0 4px;
         }
 
-        /* Галерея */
-        .gallery-container {
+        .color-picker {
             display: flex;
-            gap: 12px;
-            overflow-x: auto;
-            padding-bottom: 8px;
-            margin-bottom: 10px;
-            scrollbar-width: none;
-        }
-        .gallery-container::-webkit-scrollbar { display: none; }
-
-        .gallery-item {
-            min-width: 140px;
-            height: 180px;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid var(--glass-border);
-            background: #000;
-            flex-shrink: 0;
-        }
-        .gallery-item img {
-            width: 100%; height: 100%;
-            object-fit: cover;
+            gap: 8px;
+            margin-bottom: 12px;
+            justify-content: center;
         }
 
-        .notification-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.85);
-            backdrop-filter: blur(8px);
-            z-index: 99999;
-            display: flex; align-items: center; justify-content: center;
-            padding: 20px;
+        .color-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
         }
-        .hidden-notification { display: none !important; }
-        .notification-card {
-            background: #18181b;
-            border: 2px solid var(--red);
-            border-radius: 20px;
-            padding: 24px;
-            text-align: center;
-            max-width: 320px; width: 100%;
-            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+
+        .color-btn.active {
+            border-color: #fff;
+            transform: scale(1.1);
         }
     </style>
 </head>
 <body>
-
-    <!-- Стартовый экран -->
-    <div id="screen-start" class="screen">
-        <div style="font-size: 3rem; margin-bottom: 10px;">🍸👑</div>
-        <h1>ПLОМБИР</h1>
-        <p>Голливудский шик, красная дорожка и 1 год проекту! Встречаем юбилей на максимальном стиле.</p>
-        <button class="btn-gold" onclick="handleReadyYes()">ВОЙТИ НА ДОРОЖКУ 🔥</button>
-        <button class="btn-outline" onclick="handleReadyNo()">ПРОПУСТИТЬ ТУСУ 🛑</button>
-    </div>
-
-    <!-- Модалка предупреждения -->
-    <div id="noNotification" class="notification-overlay hidden-notification">
-        <div class="notification-card">
-            <h3 style="color: var(--red); margin-bottom: 10px; font-size: 1.2rem;">ОШИБКА ДОСТУПА! 🚫</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Дед запрещает пропускать главный движ года! Придется врываться.</p>
-            <button class="btn-gold" onclick="document.getElementById('noNotification').classList.add('hidden-notification')">ПОНЯЛ, ИДУ!</button>
-        </div>
-    </div>
-
-    <!-- Заставка -->
-    <div id="screen-preload" class="screen hidden-screen">
-        <video id="introVideo" class="video-container" playsinline preload="auto">
-            <source src="https://assets.mixkit.co/videos/preview/mixkit-festive-lights-background-31427-large.mp4" type="video/mp4">
-        </video>
-        <div class="preload-content">
-            <div style="font-weight: 900; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px;">RED CARPET EXPERIENCE</div>
-            <div id="loadingStatus" class="loading-status">Загрузка тусовки через 14 сек...</div>
-            <button class="btn-outline" style="background: rgba(0,0,0,0.5); border-color: var(--gold); color: var(--gold);" onclick="skipPreload()">ПРОПУСТИТЬ ЗАСТАВКУ ⏩</button>
-        </div>
-    </div>
-
-    <!-- Главный экран -->
-    <div id="screen-main" class="hidden-screen">
-        
-        <!-- Шапка события -->
-        <div class="header-card">
-            <div class="badge-pill">1 ГОД ПРОЕКТА • ЮБИЛЕЙ</div>
-            <h2 style="margin-top: 8px;">ПLОМБИР: RED CARPET</h2>
-            <p>12 ДЕКАБРЯ • КЛУБ «БАЗА» (Гродно)</p>
-            <div style="font-size: 0.85rem; color: var(--gold); font-weight: 700;">✨ Дресс-код: Hollywood Glam & Black Tie</div>
-        </div>
-
-        <!-- 1. СТЕНА ПАПАРАЦЦИ СВЕРХУ -->
-        <div class="section-title">💬 Стена Папарацци</div>
-        <div class="paparazzi-cover">
-            <div class="paparazzi-header">
-                <div style="font-size: 0.9rem; font-weight: 800; color: var(--text-main);">📸 LIVE FEED ДАЙЖЕСТ</div>
-                <div class="paparazzi-badge">ONLINE</div>
+    <div class="app-container">
+        <!-- ЭКРАН 1: ПРОФИЛЬ -->
+        <div id="screen-profile" class="screen active">
+            <h2>Мой Профиль</h2>
+            <div class="card">
+                <div class="profile-header">
+                    <div class="avatar" id="user-initials">П</div>
+                    <div class="profile-info">
+                        <h3 id="user-fullname">Павел Цейко</h3>
+                        <p id="user-username">@bardrop</p>
+                    </div>
+                </div>
+                <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 12px;">
+                    Статус: <span style="color: var(--accent);">В клубе ПLОМБИР 🔥</span>
+                </div>
+                <button class="btn" onclick="alert('Редактирование профиля в разработке!')">Изменить статус</button>
             </div>
-            <div class="ticker-wrap">
-                <div class="ticker-text" id="tickerDisplay">Загрузка весточек с красной дорожки...</div>
-            </div>
-            <div class="wall-input-row">
-                <input type="text" id="userMessageInput" placeholder="Оставить послание на стене..." maxlength="60">
-                <button onclick="sendUserMessage()">💬</button>
+            
+            <div class="card">
+                <h3 style="font-size: 16px; margin-bottom: 10px;">Статистика тусовки</h3>
+                <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.5;">
+                    Посещено мероприятий: <b>4</b><br>
+                    Уровень VIP: <b>Пломбир-Ультра</b>
+                </p>
             </div>
         </div>
 
-        <!-- 2. МИНИ-ИГРА: РАЗБЕЙ СТЕНУ ПLОМБИРА -->
-        <div class="section-title">🕹️ Мини-игра: Разбей Стену Тусы</div>
-        <div class="glass-card" style="padding: 12px;">
-            <div class="arcade-info">
-                <span>Счет: <strong id="scoreVal" style="color:var(--gold);">0</strong></span>
-                <span id="gameStatusText" style="color:var(--gold);">Тапай / двигай платформу</span>
+        <!-- ЭКРАН 2: ЧАТЫ И ГРУППЫ -->
+        <div id="screen-chats" class="screen">
+            <h2>Чаты тусовки</h2>
+            <div class="card" onclick="alert('Открытие общего чата...')" style="cursor: pointer;">
+                <div style="font-weight: bold; margin-bottom: 4px;">💬 Общий чат #PLMBR</div>
+                <div style="font-size: 13px; color: var(--text-secondary);">Все на танцпол! Музыка играет...</div>
             </div>
-            <div class="arcade-container">
-                <canvas id="gameCanvas"></canvas>
+            <div class="card" onclick="alert('Открытие чата VIP-зоны...')" style="cursor: pointer;">
+                <div style="font-weight: bold; margin-bottom: 4px;">🍸 VIP Комната</div>
+                <div style="font-size: 13px; color: var(--text-secondary);">Закрытая тусовка для своих.</div>
             </div>
-            <button class="btn-gold" style="width: 100%; max-width: none; margin-top: 10px; padding: 12px;" onclick="restartGame()">ПЕРЕЗАПУСТИТЬ ИГРУ 🔄</button>
         </div>
 
-        <!-- 3. АРХИВ ВОСПОМИНАНИЙ (GOOGLE ДИСК) -->
-        <div class="section-title">📸 Архив воспоминаний</div>
-        <div class="gallery-container" id="googleDriveGallery">
-            <div class="gallery-item" style="display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:0.8rem;text-align:center;padding:10px;">Загружаем архив с Диска...</div>
+        <!-- ЭКРАН 3: ИГРА КРОКОДИЛ -->
+        <div id="screen-game" class="screen">
+            <h2>Арт-Крокодил</h2>
+            <div class="canvas-container">
+                <canvas id="paintCanvas"></canvas>
+            </div>
+            <div class="color-picker">
+                <div class="color-btn active" style="background: #000;" onclick="setColor('#000', this)"></div>
+                <div class="color-btn" style="background: #ff3366;" onclick="setColor('#ff3366', this)"></div>
+                <div class="color-btn" style="background: #00ffcc;" onclick="setColor('#00ffcc', this)"></div>
+                <div class="color-btn" style="background: #0066ff;" onclick="setColor('#0066ff', this)"></div>
+            </div>
+            <div class="game-controls">
+                <button class="btn" onclick="clearCanvas()" style="background: var(--danger); color: #fff;">Очистить холст</button>
+            </div>
         </div>
 
+        <!-- ЭКРАН 4: ДРУЗЬЯ И ОНЛАЙН -->
+        <div id="screen-friends" class="screen">
+            <h2>Люди в клубе</h2>
+            <div class="card">
+                <div class="user-list">
+                    <div class="user-item">
+                        <div class="user-meta">
+                            <div class="mini-avatar">А</div>
+                            <div>
+                                <div style="font-size: 14px; font-weight: 600;">Александр</div>
+                                <div style="font-size: 12px; color: var(--text-secondary);"><span class="status-dot"></span>В сети</div>
+                            </div>
+                        </div>
+                        <button style="background: transparent; border: 1px solid var(--accent); color: var(--accent); border-radius: 8px; padding: 6px 12px; font-size: 12px; cursor: pointer;">В друзей</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- НИЖНЯЯ ПАНЕЛЬ НАВИГАЦИИ -->
+        <nav class="navbar">
+            <div class="nav-item active" onclick="switchScreen('profile', this)">
+                <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                Профиль
+            </div>
+            <div class="nav-item" onclick="switchScreen('chats', this)">
+                <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/></svg>
+                Чаты
+            </div>
+            <div class="nav-item" onclick="switchScreen('game', this)">
+                <svg viewBox="0 0 24 24"><path d="M21 6H3c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-10 7H8v3H6v-3H3v-2h3V8h2v3h3v2zm4.5 2c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm3-4c-.83 0-1.5-.67-1.5-1.5S17.67 8 18.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+                Игра
+            </div>
+            <div class="nav-item" onclick="switchScreen('friends', this)">
+                <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                Люди
+            </div>
+        </nav>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjfWGsUzExw1RlJtHgDypL3Se7w-lORUBXu82NPQxXkvsnnZB7WcGQQ0oOyXHWcqHopQ/exec";
+        // Инициализация Telegram WebApp
+        let tg = window.Telegram.WebApp;
+        tg.expand();
 
-        let cloudMessages = [
-            { author: "ПLОМБИР", text: "С юбилеем! Ждем всех на красной дорожке 🔥" }
-        ];
-        let cloudPhotos = [];
-
-        async function fetchBackendData() {
-            if (!SCRIPT_URL.includes("http")) return;
-            try {
-                let response = await fetch(SCRIPT_URL);
-                let data = await response.json();
-                if (data.status === "success") {
-                    if (data.messages && data.messages.length > 0) {
-                        cloudMessages = data.messages;
-                    }
-                    if (data.photos && data.photos.length > 0) {
-                        cloudPhotos = data.photos;
-                        renderGallery();
-                    }
-                }
-            } catch(e) {
-                console.error("Ошибка синхронизации с бэкендом:", e);
-                renderFallbackGallery();
-            }
-        }
-
-        function renderFallbackGallery() {
-            // Если с бэкенда не пришло, показываем заглушки или прямые ссылки из папок
-            const container = document.getElementById('googleDriveGallery');
-            container.innerHTML = `
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400" alt="ПLОМБИР"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400" alt="ПLОМБИР"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400" alt="ПLОМБИР"></div>
-            `;
-        }
-
-        function renderGallery() {
-            const container = document.getElementById('googleDriveGallery');
-            if (cloudPhotos.length === 0) {
-                renderFallbackGallery();
-                return;
-            }
-            container.innerHTML = cloudPhotos.map(url => `
-                <div class="gallery-item">
-                    <img src="${url}" alt="ПLОМБИР Архив" loading="lazy">
-                </div>
-            `).join('');
-        }
-
-        let msgIndex = 0;
-        function updateTicker() {
-            const display = document.getElementById('tickerDisplay');
-            if (cloudMessages.length === 0) return;
-            let current = cloudMessages[msgIndex % cloudMessages.length];
-            display.innerHTML = `<span style="color:#fff;">${current.author}:</span> ${current.text}`;
-            msgIndex++;
-        }
-
-        async function sendUserMessage() {
-            const input = document.getElementById('userMessageInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            let tgUser = window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user;
-            let authorName = tgUser ? (tgUser.first_name || tgUser.username || "Гость") : "Гость Тусовки";
-
-            cloudMessages.push({ author: authorName, text: text });
-            input.value = "";
-            updateTicker();
-
-            if (SCRIPT_URL.includes("http")) {
-                try {
-                    await fetch(SCRIPT_URL, {
-                        method: "POST",
-                        mode: "no-cors",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ author: authorName, text: text })
-                    });
-                } catch(e) {
-                    console.error("Не удалось отправить сообщение на сервер", e);
-                }
-            }
-        }
-
-        // ЛОГИКА МИНИ-ИГРЫ (АРКАНОИД)
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        
-        let score = 0;
-        let gameRunning = false;
-        let ball, paddle, bricks;
-
-        function initGameDimensions() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = 300;
-        }
-
-        function resetGameObjects() {
-            ball = {
-                x: canvas.width / 2,
-                y: canvas.height - 60,
-                radius: 8,
-                dx: 3,
-                dy: -3
-            };
-
-            paddle = {
-                width: 90,
-                height: 14,
-                x: (canvas.width - 90) / 2,
-                y: canvas.height - 25
-            };
-
-            bricks = [];
-            const rows = 4;
-            const cols = 6;
-            const padding = 6;
-            const width = (canvas.width - (padding * (cols + 1))) / cols;
-            const height = 20;
-
-            for(let r=0; r<rows; r++) {
-                for(let c=0; c<cols; c++) {
-                    bricks.push({
-                        x: padding + c * (width + padding),
-                        y: 30 + r * (height + padding),
-                        w: width,
-                        h: height,
-                        status: 1
-                    });
-                }
-            }
-        }
-
-        function restartGame() {
-            initGameDimensions();
-            resetGameObjects();
-            score = 0;
-            document.getElementById('scoreVal').textContent = score;
-            document.getElementById('gameStatusText').textContent = "Лови шарик!";
-            gameRunning = true;
-        }
-
-        // Управление пальцем / мышкой
-        canvas.addEventListener('touchmove', (e) => {
-            let rect = canvas.getBoundingClientRect();
-            let rootX = e.touches[0].clientX - rect.left;
-            paddle.x = rootX - paddle.width / 2;
-            if(paddle.x < 0) paddle.x = 0;
-            if(paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
-            e.preventDefault();
-        }, {passive: false});
-
-        canvas.addEventListener('mousemove', (e) => {
-            let rect = canvas.getBoundingClientRect();
-            let rootX = e.clientX - rect.left;
-            paddle.x = rootX - paddle.width / 2;
-            if(paddle.x < 0) paddle.x = 0;
-            if(paddle.x + paddle.width > canvas.width) paddle.x = canvas.width - paddle.width;
-        });
-
-        function updateGame() {
-            if (!gameRunning) return;
-
-            ball.x += ball.dx;
-            ball.y += ball.dy;
-
-            // Стенки
-            if (ball.x - ball.radius < 0 || ball.x + ball.radius > canvas.width) {
-                ball.dx = -ball.dx;
-            }
-            if (ball.y - ball.radius < 0) {
-                ball.dy = -ball.dy;
-            }
-
-            // Платформа
-            if (
-                ball.y + ball.radius >= paddle.y &&
-                ball.x >= paddle.x &&
-                ball.x <= paddle.x + paddle.width
-            ) {
-                ball.dy = -ball.dy;
-                // Угол отскока зависит от места удара
-                let hitPoint = ball.x - (paddle.x + paddle.width / 2);
-                ball.dx = hitPoint * 0.15;
-            }
-
-            // Проверка кирпичей
-            let activeBricks = 0;
-            bricks.forEach(b => {
-                if (b.status === 1) {
-                    activeBricks++;
-                    if (
-                        ball.x > b.x && ball.x < b.x + b.w &&
-                        ball.y > b.y && ball.y < b.y + b.h
-                    ) {
-                        ball.dy = -ball.dy;
-                        b.status = 0;
-                        score += 10;
-                        document.getElementById('scoreVal').textContent = score;
-                    }
-                }
-            });
-
-            if (activeBricks === 0) {
-                document.getElementById('gameStatusText').textContent = "ПОБЕДА! СТЕНА РАЗБИТА 🔥";
-                gameRunning = false;
-            }
-
-            // Проигрыш
-            if (ball.y + ball.radius > canvas.height) {
-                document.getElementById('gameStatusText').textContent = "УПС! ШАРИК УПАЛ 🛑";
-                gameRunning = false;
-            }
-        }
-
-        function drawGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Кирпичи
-            bricks.forEach(b => {
-                if (b.status === 1) {
-                    ctx.fillStyle = "#fcd34d";
-                    ctx.fillRect(b.x, b.y, b.w, b.h);
-                    ctx.strokeStyle = "#d97706";
-                    ctx.strokeRect(b.x, b.y, b.w, b.h);
-                }
-            });
-
-            // Платформа
-            ctx.fillStyle = "#ef4444";
-            ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-
-            // Шарик
-            ctx.beginPath();
-            ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
-            ctx.fillStyle = "#ffffff";
-            ctx.fill();
-            ctx.closePath();
-        }
-
-        function gameLoop() {
-            updateGame();
-            drawGame();
-            requestAnimationFrame(gameLoop);
-        }
-
-        let preloadTimer = null;
-        let countdownInterval = null;
-
-        function handleReadyNo() {
-            document.getElementById('noNotification').classList.remove('hidden-notification');
-        }
-
-        function handleReadyYes() {
-            document.getElementById('screen-start').classList.add('hidden-screen');
-            document.getElementById('screen-preload').classList.remove('hidden-screen');
-
-            const introVideo = document.getElementById('introVideo');
-            if (introVideo) {
-                introVideo.muted = false;
-                introVideo.play().catch(() => {});
-            }
-
-            let timeLeft = 14;
-            const statusEl = document.getElementById('loadingStatus');
-            statusEl.textContent = `Загрузка тусовки через ${timeLeft} сек...`;
-
-            countdownInterval = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    statusEl.textContent = `Загрузка тусовки через ${timeLeft} сек...`;
-                } else {
-                    statusEl.textContent = "Врываемся!";
-                }
-            }, 1000);
-
-            preloadTimer = setTimeout(() => {
-                finishPreload();
-            }, 14000);
-        }
-
-        function skipPreload() {
-            clearTimeout(preloadTimer);
-            clearInterval(countdownInterval);
-            finishPreload();
-        }
-
-        function finishPreload() {
-            const preloadScreen = document.getElementById('screen-preload');
-            const introVideo = document.getElementById('introVideo');
-            if (introVideo) introVideo.pause();
-
-            preloadScreen.classList.add('hidden-screen');
-            document.getElementById('screen-main').classList.remove('hidden-screen');
+        // Переключение экранов
+        function switchScreen(screenId, element) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             
-            fetchBackendData();
-            updateTicker();
-            setInterval(updateTicker, 3500);
+            document.getElementById('screen-' + screenId).classList.add('active');
+            element.classList.add('active');
+        }
 
-            // Запуск арканоида
-            initGameDimensions();
-            restartGame();
-            gameLoop();
+        // Логика холста (Крокодил)
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        let painting = false;
+        let currentColor = '#000';
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        window.addEventListener('load', resizeCanvas);
+        window.addEventListener('resize', resizeCanvas);
+
+        function startPosition(e) {
+            painting = true;
+            draw(e);
+        }
+
+        function endPosition() {
+            painting = false;
+            ctx.beginPath();
+        }
+
+        function draw(e) {
+            if (!painting) return;
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = currentColor;
+
+            let clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            let clientY = e.clientY || (e.touches && e.touches[0].clientY);
+            let rect = canvas.getBoundingClientRect();
+
+            ctx.lineTo(clientX - rect.left, clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(clientX - rect.left, clientY - rect.top);
+        }
+
+        canvas.addEventListener('mousedown', startPosition);
+        canvas.addEventListener('mouseup', endPosition);
+        canvas.addEventListener('mousemove', draw);
+
+        canvas.addEventListener('touchstart', startPosition);
+        canvas.addEventListener('touchend', endPosition);
+        canvas.addEventListener('touchmove', draw);
+
+        function clearCanvas() {
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function setColor(color, element) {
+            currentColor = color;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
         }
     </script>
 </body>
